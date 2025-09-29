@@ -1,0 +1,3 @@
+CREATE DATABASE barbearia_banco;
+
+CREATE TABLE 
