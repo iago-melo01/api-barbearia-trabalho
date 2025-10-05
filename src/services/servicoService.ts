@@ -1,22 +1,25 @@
-// src/services/servicoService.ts
-import { Servico } from '../types/servico';
-import { v4 as uuidv4 } from 'uuid'; // Instale com: npm install uuid
+import { prisma } from '../database/prisma';
+import { Servico } from '../generated/prisma';
 
-const servicos: Servico[] = [];
+type ServicoCreateData = Omit<Servico, 'id' | 'createdAt' | 'updatedAt'>;
+type ServicoUpdateData = Partial<ServicoCreateData>;
 
-export function criarServico(
-  nome: string,
-  descricao: string,
-  preco: number
-): Servico {
-  const novoServico: Servico = {
-    id: uuidv4(),
-    nome,
-    descricao,
-    preco,
-    dataCriacao: new Date(),
-  };
+export const create = async (data: ServicoCreateData): Promise<Servico> => {
+  return prisma.servico.create({ data });
+};
 
-  servicos.push(novoServico);
-  return novoServico;
-}
+export const getAll = async (): Promise<Servico[]> => {
+  return prisma.servico.findMany();
+};
+
+export const getById = async (id: number): Promise<Servico | null> => {
+  return prisma.servico.findUnique({ where: { id } });
+};
+
+export const update = async (id: number, data: ServicoUpdateData): Promise<Servico> => {
+  return prisma.servico.update({ where: { id }, data });
+};
+
+export const remove = async (id: number): Promise<Servico> => {
+  return prisma.servico.delete({ where: { id } });
+};

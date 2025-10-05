@@ -1,14 +1,17 @@
-// src/index.ts
+
 import express from 'express';
-import { criarServicoController } from './controllers/servicoController';
+import 'dotenv/config';
+import routes from './routes/servicoRoutes';
+
 
 const app = express();
-const PORT = 3000;
 
 app.use(express.json());
 
-app.post('/servicos', criarServicoController);
+app.use('', routes);
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
