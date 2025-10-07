@@ -1,8 +1,9 @@
 import { prisma } from '../database/prisma';
 import { Barbeiro } from '../generated/prisma';
 
-type BarbeiroCreateData = Omit<Barbeiro, 'id' | 'createdAt' | 'updatedAt'>;
+type BarbeiroCreateData = Omit<Barbeiro, 'id' | 'createdAt' | 'updatedAt' >;
 type BarbeiroUpdateData = Partial<BarbeiroCreateData>;
+
 
 export const create = async (data: BarbeiroCreateData): Promise<Barbeiro> => {
   return prisma.barbeiro.create({ data });

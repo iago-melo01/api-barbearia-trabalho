@@ -35,9 +35,7 @@ model Barbeiro {
   telefone  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  avaliacoes Avaliacao[]
-  agendamentos Agendamento[]
-
+  
   @@map("barbeiros")
 }
 
@@ -48,8 +46,7 @@ model Servico {
   preco     Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  avaliacoes Avaliacao[]
-  agendamentos Agendamento[]
+  
 
   @@map("servicos")
 }
