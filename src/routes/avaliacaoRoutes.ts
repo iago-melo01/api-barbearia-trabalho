@@ -22,12 +22,12 @@ router.get("/avaliacoes", getAllAvaliacoes);
 router.get("/avaliacoes/:id", validateParams(idParamSchema), getAvaliacaoById);
 
 router.put(
-  "/servicos/:id",
+  "/avaliacoes/:id",
   validateParams(idParamSchema),
   validateBody(updateAvaliacaoSchema),
   updateAvaliacao
 );
 
-router.delete("/servicos/:id", validateParams(idParamSchema), deleteAvaliacao);
+router.delete("/avaliacoes/:id", validateParams(idParamSchema), deleteAvaliacao);
   
 export default router;

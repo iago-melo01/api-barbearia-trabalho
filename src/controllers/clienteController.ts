@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as clienteService from '../services/clienteService';
 
-export const createcliente = async (req: Request, res: Response) => {
+export const createCliente = async (req: Request, res: Response) => {
   try {
     const cliente = await clienteService.create(req.body);
     return res.status(201).json(cliente);
@@ -11,7 +11,7 @@ export const createcliente = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllclientes = async (req: Request, res: Response) => {
+export const getAllClientes = async (req: Request, res: Response) => {
   try {
     const clientes = await clienteService.getAll();
     return res.json(clientes);
@@ -20,7 +20,7 @@ export const getAllclientes = async (req: Request, res: Response) => {
   }
 };
 
-export const getclienteById = async (req: Request, res: Response) => {
+export const getClienteById = async (req: Request, res: Response) => {
   try {
     const cliente = await clienteService.getById(Number(req.params.id));
     if (!cliente) return res.status(404).json({ message: 'cliente não encontrado(a).' });
@@ -30,7 +30,7 @@ export const getclienteById = async (req: Request, res: Response) => {
   }
 };
 
-export const updatecliente = async (req: Request, res: Response) => {
+export const updateCliente = async (req: Request, res: Response) => {
   try {
     const cliente = await clienteService.update(Number(req.params.id), req.body);
     return res.json(cliente);
@@ -41,7 +41,7 @@ export const updatecliente = async (req: Request, res: Response) => {
   }
 };
 
-export const deletecliente = async (req: Request, res: Response) => {
+export const deleteCliente = async (req: Request, res: Response) => {
   try {
     await clienteService.remove(Number(req.params.id));
     return res.status(204).send();
