@@ -12,4 +12,5 @@ routes.use(clienteRoutes);
 routes.use(agendamentoRoutes);
 routes.use(barbeiroRoutes);
 
+
 export default routes;

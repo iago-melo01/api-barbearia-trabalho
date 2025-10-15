@@ -9,7 +9,7 @@ npm install
 
 Na raiz do projeto, crie um arquivo chamado .env e adicione a variável de ambiente com a URL do seu banco Supabase:
 
-DATABASE_URL="postgresql://postgres:HioTCNO4lgM0hjnW@db.pvuwutgrsnzbzxfvzued.supabase.co:5432/postgres"
+DATABASE_URL="postgresql://postgres:oqRiiFGUA2fbqNLf@db.pvuwutgrsnzbzxfvzued.supabase.co:5432/postgres?schema=public&sslmode=require"
 
 
 ⚠️ Atenção: nunca compartilhe sua DATABASE_URL publicamente.

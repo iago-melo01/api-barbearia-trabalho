@@ -6,7 +6,7 @@ type BarbeiroUpdateData = Partial<BarbeiroCreateData>;
 
 
 export const create = async (data: BarbeiroCreateData): Promise<Barbeiro> => {
-  return prisma.barbeiro.create({ data });
+  return prisma.barbeiro.create({ data });  
 };
 
 export const getAll = async (): Promise<Barbeiro[]> => {
