@@ -16,6 +16,7 @@ model Cliente {
   telefone  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  agendamentos Agendamento[]
 
   @@map("clientes")
 }
@@ -27,6 +28,7 @@ model Barbeiro {
   telefone  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  agendamentos Agendamento[]
 
   @@map("barbeiros")
 }
@@ -38,7 +40,7 @@ model Servico {
   preco     Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  agendamentos Agendamento[]
   @@map("servicos")
 }
 
@@ -51,6 +53,9 @@ model Agendamento {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  cliente Cliente @relation(fields: [clienteId], references:[id])
+  barbeiro Barbeiro @relation(fields: [barbeiroId], references:[id])
+  servico Servico @relation(fields: [servicoId], references:[id])
   @@map("agendamentos")
 }
 
