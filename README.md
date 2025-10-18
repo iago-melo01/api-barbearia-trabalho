@@ -48,4 +48,9 @@ Body (JSON): { "nome": "Iago", "email": "iago@gmail.com", "senha": "iago0406", "
 
 Resposta: { "message": "Cliente criado com sucesso!" }
 
-🛠️ Scripts úteis Comando Descrição npm run dev Inicia o servidor em modo desenvolvimento npm run build Compila o TypeScript npm start Executa o projeto compilado npx prisma studio Abre o painel visual do Prisma (CRUD via navegador)
+🛠️ Scripts úteis
+Comando	Descrição
+npm run dev	Inicia o servidor em modo desenvolvimento
+npm run build	Compila o TypeScript
+npm start	Executa o projeto compilado
+npx prisma studio	Abre o painel visual do Prisma (CRUD via navegador)
