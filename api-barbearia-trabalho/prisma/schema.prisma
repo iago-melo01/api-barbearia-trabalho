@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  AGENDADO
+  CONCLUIDO
+  CANCELADO
+
+}
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  telefone  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  agendamentos Agendamento[]
+  avaliacoes Avaliacao[]
+  @@map("clientes")
+}
+
+model Barbeiro {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String
+  telefone  String?
+  mediaNotas Float @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  agendamentos Agendamento[]
+  avaliacoes Avaliacao[]
+  @@map("barbeiros")
+}
+
+model Servico {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  descricao String
+  preco     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  agendamentos Agendamento[]
+  avaliacoes Avaliacao[]
+  @@map("servicos")
+}
+
+model Agendamento {
+  id         Int      @id @default(autoincrement())
+  clienteId  Int
+  barbeiroId Int
+  servicoId  Int
+  data       DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  status Status @default(AGENDADO)
+
+  cliente Cliente @relation(fields: [clienteId], references:[id])
+  barbeiro Barbeiro @relation(fields: [barbeiroId], references:[id])
+  servico Servico @relation(fields: [servicoId], references:[id])
+  @@map("agendamentos")
+}
+
+model Avaliacao {
+  id         Int      @id @default(autoincrement())
+  clienteId  Int
+  barbeiroId Int
+  servicoId  Int
+  nota       Int
+  comentario String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  servico Servico @relation(fields:[servicoId], references:[id])
+  cliente Cliente @relation(fields:[clienteId], references:[id])
+  barbeiro Barbeiro @relation(fields:[barbeiroId], references:[id])
+
+  @@map("avaliacoes")
+}
