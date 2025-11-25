@@ -12,7 +12,6 @@ import {
   updateClienteSchema,
   idParamSchema,
 } from "../schemas/validation";
-import cors from "cors";
 
 const router = Router();
 
