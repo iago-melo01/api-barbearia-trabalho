@@ -3,44 +3,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f7fa;
+  background-color: #f6f6f4;
   padding: 2rem;
 }
 
 .error-boundary-content {
-  background: white;
-  border-radius: 12px;
-  padding: 3rem;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
   text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
+  border: 1px solid #ecece8;
+  max-width: 460px;
 }
 
 .error-boundary-content h1 {
-  color: #dc3545;
+  color: #a82222;
   margin-bottom: 1rem;
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 .error-boundary-content p {
-  color: #6c757d;
+  color: #5c5c5c;
   margin-bottom: 2rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .error-boundary-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 6px;
-  font-size: 1rem;
+  background-color: #151515;
+  color: #ffffff;
+  border: 1px solid #151515;
+  padding: 0.65rem 1.75rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
 .error-boundary-button:hover {
-  transform: translateY(-2px);
+  background-color: #000000;
 }
 

@@ -27,6 +27,7 @@ export const Avaliacoes = () => {
     comentario: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -56,6 +57,7 @@ export const Avaliacoes = () => {
     setIsEditMode(false);
     setSelectedAvaliacao(null);
     setFormData({ clienteId: 0, barbeiroId: 0, servicoId: 0, nota: 5, comentario: '' });
+    setFormError(null);
     setIsModalOpen(true);
   };
 
@@ -69,12 +71,19 @@ export const Avaliacoes = () => {
       nota: avaliacao.nota,
       comentario: avaliacao.comentario,
     });
+    setFormError(null);
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setFormError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setFormError(null);
 
     try {
       if (isEditMode && selectedAvaliacao) {
@@ -82,10 +91,10 @@ export const Avaliacoes = () => {
       } else {
         await avaliacaoService.create(formData);
       }
-      setIsModalOpen(false);
+      closeModal();
       loadData();
     } catch (err: any) {
-      setError(err.message || 'Erro ao salvar avaliação');
+      setFormError(err.message || 'Dados inválidos. Verifique as informações e tente novamente.');
     }
   };
 
@@ -162,11 +171,11 @@ export const Avaliacoes = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         title={isEditMode ? 'Editar Avaliação' : 'Nova Avaliação'}
         footer={
           <>
-            <Button onClick={() => setIsModalOpen(false)} variant="secondary">
+            <Button onClick={closeModal} variant="secondary">
               Cancelar
             </Button>
             <Button onClick={handleSubmit} variant="primary" type="submit">
@@ -175,53 +184,56 @@ export const Avaliacoes = () => {
           </>
         }
       >
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Cliente"
-            name="clienteId"
-            value={formData.clienteId}
-            onChange={(e) => setFormData({ ...formData, clienteId: parseInt(e.target.value) })}
-            select
-            options={clientes.map((c) => ({ value: c.id, label: c.nome }))}
-            required
-          />
-          <FormInput
-            label="Barbeiro"
-            name="barbeiroId"
-            value={formData.barbeiroId}
-            onChange={(e) => setFormData({ ...formData, barbeiroId: parseInt(e.target.value) })}
-            select
-            options={barbeiros.map((b) => ({ value: b.id, label: b.nome }))}
-            required
-          />
-          <FormInput
-            label="Serviço"
-            name="servicoId"
-            value={formData.servicoId}
-            onChange={(e) => setFormData({ ...formData, servicoId: parseInt(e.target.value) })}
-            select
-            options={servicos.map((s) => ({ value: s.id, label: s.nome }))}
-            required
-          />
-          <FormInput
-            label="Nota (1-5)"
-            name="nota"
-            type="number"
-            value={formData.nota}
-            onChange={(e) => setFormData({ ...formData, nota: parseInt(e.target.value) })}
-            min={1}
-            max={5}
-            required
-          />
-          <FormInput
-            label="Comentário"
-            name="comentario"
-            value={formData.comentario}
-            onChange={(e) => setFormData({ ...formData, comentario: e.target.value })}
-            textarea
-            required
-          />
-        </form>
+        <>
+          {formError && <div className="form-error-banner">{formError}</div>}
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              label="Cliente"
+              name="clienteId"
+              value={formData.clienteId}
+              onChange={(e) => setFormData({ ...formData, clienteId: parseInt(e.target.value) })}
+              select
+              options={clientes.map((c) => ({ value: c.id, label: c.nome }))}
+              required
+            />
+            <FormInput
+              label="Barbeiro"
+              name="barbeiroId"
+              value={formData.barbeiroId}
+              onChange={(e) => setFormData({ ...formData, barbeiroId: parseInt(e.target.value) })}
+              select
+              options={barbeiros.map((b) => ({ value: b.id, label: b.nome }))}
+              required
+            />
+            <FormInput
+              label="Serviço"
+              name="servicoId"
+              value={formData.servicoId}
+              onChange={(e) => setFormData({ ...formData, servicoId: parseInt(e.target.value) })}
+              select
+              options={servicos.map((s) => ({ value: s.id, label: s.nome }))}
+              required
+            />
+            <FormInput
+              label="Nota (1-5)"
+              name="nota"
+              type="number"
+              value={formData.nota}
+              onChange={(e) => setFormData({ ...formData, nota: parseInt(e.target.value) })}
+              min={1}
+              max={5}
+              required
+            />
+            <FormInput
+              label="Comentário"
+              name="comentario"
+              value={formData.comentario}
+              onChange={(e) => setFormData({ ...formData, comentario: e.target.value })}
+              textarea
+              required
+            />
+          </form>
+        </>
       </Modal>
     </div>
   );

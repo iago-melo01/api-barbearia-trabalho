@@ -20,6 +20,7 @@ export const Clientes = () => {
     telefone: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     loadClientes();
@@ -41,6 +42,7 @@ export const Clientes = () => {
     setIsEditMode(false);
     setSelectedCliente(null);
     setFormData({ nome: '', email: '', senha: '', telefone: '' });
+    setFormError(null);
     setIsModalOpen(true);
   };
 
@@ -53,12 +55,19 @@ export const Clientes = () => {
       senha: '',
       telefone: cliente.telefone || '',
     });
+    setFormError(null);
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setFormError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setFormError(null);
 
     try {
       if (isEditMode && selectedCliente) {
@@ -74,10 +83,10 @@ export const Clientes = () => {
       } else {
         await clienteService.create(formData);
       }
-      setIsModalOpen(false);
+      closeModal();
       loadClientes();
     } catch (err: any) {
-      setError(err.message || 'Erro ao salvar cliente');
+      setFormError(err.message || 'Dados inválidos. Verifique as informações e tente novamente.');
     }
   };
 
@@ -141,11 +150,11 @@ export const Clientes = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         title={isEditMode ? 'Editar Cliente' : 'Novo Cliente'}
         footer={
           <>
-            <Button onClick={() => setIsModalOpen(false)} variant="secondary">
+            <Button onClick={closeModal} variant="secondary">
               Cancelar
             </Button>
             <Button onClick={handleSubmit} variant="primary" type="submit">
@@ -154,37 +163,40 @@ export const Clientes = () => {
           </>
         }
       >
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Nome"
-            name="nome"
-            value={formData.nome}
-            onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-            required
-          />
-          <FormInput
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            required
-          />
-          <FormInput
-            label={isEditMode ? 'Nova Senha (deixe em branco para manter)' : 'Senha'}
-            name="senha"
-            type="password"
-            value={formData.senha}
-            onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
-            required={!isEditMode}
-          />
-          <FormInput
-            label="Telefone"
-            name="telefone"
-            value={formData.telefone}
-            onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-          />
-        </form>
+        <>
+          {formError && <div className="form-error-banner">{formError}</div>}
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              label="Nome"
+              name="nome"
+              value={formData.nome}
+              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+              required
+            />
+            <FormInput
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+            <FormInput
+              label={isEditMode ? 'Nova Senha (deixe em branco para manter)' : 'Senha'}
+              name="senha"
+              type="password"
+              value={formData.senha}
+              onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
+              required={!isEditMode}
+            />
+            <FormInput
+              label="Telefone"
+              name="telefone"
+              value={formData.telefone}
+              onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+            />
+          </form>
+        </>
       </Modal>
     </div>
   );

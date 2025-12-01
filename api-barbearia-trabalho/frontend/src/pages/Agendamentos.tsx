@@ -28,6 +28,7 @@ export const Agendamentos = () => {
   });
   const [status, setStatus] = useState<Status>(Status.AGENDADO);
   const [error, setError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -58,6 +59,7 @@ export const Agendamentos = () => {
     setSelectedAgendamento(null);
     setFormData({ clienteId: 0, barbeiroId: 0, servicoId: 0, data: '' });
     setStatus(Status.AGENDADO);
+    setFormError(null);
     setIsModalOpen(true);
   };
 
@@ -71,12 +73,19 @@ export const Agendamentos = () => {
       data: new Date(agendamento.data).toISOString().slice(0, 16),
     });
     setStatus(agendamento.status);
+    setFormError(null);
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setFormError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setFormError(null);
 
     try {
       if (isEditMode && selectedAgendamento) {
@@ -88,10 +97,10 @@ export const Agendamentos = () => {
       } else {
         await agendamentoService.create(formData);
       }
-      setIsModalOpen(false);
+      closeModal();
       loadData();
     } catch (err: any) {
-      setError(err.message || 'Erro ao salvar agendamento');
+      setFormError(err.message || 'Dados inválidos. Verifique as informações e tente novamente.');
     }
   };
 
@@ -190,11 +199,11 @@ export const Agendamentos = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         title={isEditMode ? 'Editar Agendamento' : 'Novo Agendamento'}
         footer={
           <>
-            <Button onClick={() => setIsModalOpen(false)} variant="secondary">
+            <Button onClick={closeModal} variant="secondary">
               Cancelar
             </Button>
             <Button onClick={handleSubmit} variant="primary" type="submit">
@@ -203,58 +212,61 @@ export const Agendamentos = () => {
           </>
         }
       >
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Cliente"
-            name="clienteId"
-            value={formData.clienteId}
-            onChange={(e) => setFormData({ ...formData, clienteId: parseInt(e.target.value) })}
-            select
-            options={clientes.map((c) => ({ value: c.id, label: c.nome }))}
-            required
-          />
-          <FormInput
-            label="Barbeiro"
-            name="barbeiroId"
-            value={formData.barbeiroId}
-            onChange={(e) => setFormData({ ...formData, barbeiroId: parseInt(e.target.value) })}
-            select
-            options={barbeiros.map((b) => ({ value: b.id, label: b.nome }))}
-            required
-          />
-          <FormInput
-            label="Serviço"
-            name="servicoId"
-            value={formData.servicoId}
-            onChange={(e) => setFormData({ ...formData, servicoId: parseInt(e.target.value) })}
-            select
-            options={servicos.map((s) => ({ value: s.id, label: `${s.nome} - R$ ${s.preco.toFixed(2)}` }))}
-            required
-          />
-          <FormInput
-            label="Data e Hora"
-            name="data"
-            type="datetime-local"
-            value={formData.data}
-            onChange={(e) => setFormData({ ...formData, data: e.target.value })}
-            required
-          />
-          {isEditMode && (
+        <>
+          {formError && <div className="form-error-banner">{formError}</div>}
+          <form onSubmit={handleSubmit}>
             <FormInput
-              label="Status"
-              name="status"
-              value={status}
-              onChange={(e) => setStatus(e.target.value as Status)}
+              label="Cliente"
+              name="clienteId"
+              value={formData.clienteId}
+              onChange={(e) => setFormData({ ...formData, clienteId: parseInt(e.target.value) })}
               select
-              options={[
-                { value: Status.AGENDADO, label: 'Agendado' },
-                { value: Status.CONCLUIDO, label: 'Concluído' },
-                { value: Status.CANCELADO, label: 'Cancelado' },
-              ]}
+              options={clientes.map((c) => ({ value: c.id, label: c.nome }))}
               required
             />
-          )}
-        </form>
+            <FormInput
+              label="Barbeiro"
+              name="barbeiroId"
+              value={formData.barbeiroId}
+              onChange={(e) => setFormData({ ...formData, barbeiroId: parseInt(e.target.value) })}
+              select
+              options={barbeiros.map((b) => ({ value: b.id, label: b.nome }))}
+              required
+            />
+            <FormInput
+              label="Serviço"
+              name="servicoId"
+              value={formData.servicoId}
+              onChange={(e) => setFormData({ ...formData, servicoId: parseInt(e.target.value) })}
+              select
+              options={servicos.map((s) => ({ value: s.id, label: `${s.nome} - R$ ${s.preco.toFixed(2)}` }))}
+              required
+            />
+            <FormInput
+              label="Data e Hora"
+              name="data"
+              type="datetime-local"
+              value={formData.data}
+              onChange={(e) => setFormData({ ...formData, data: e.target.value })}
+              required
+            />
+            {isEditMode && (
+              <FormInput
+                label="Status"
+                name="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value as Status)}
+                select
+                options={[
+                  { value: Status.AGENDADO, label: 'Agendado' },
+                  { value: Status.CONCLUIDO, label: 'Concluído' },
+                  { value: Status.CANCELADO, label: 'Cancelado' },
+                ]}
+                required
+              />
+            )}
+          </form>
+        </>
       </Modal>
     </div>
   );

@@ -19,6 +19,7 @@ export const Servicos = () => {
     preco: 0,
   });
   const [error, setError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     loadServicos();
@@ -40,6 +41,7 @@ export const Servicos = () => {
     setIsEditMode(false);
     setSelectedServico(null);
     setFormData({ nome: '', descricao: '', preco: 0 });
+    setFormError(null);
     setIsModalOpen(true);
   };
 
@@ -51,12 +53,19 @@ export const Servicos = () => {
       descricao: servico.descricao,
       preco: servico.preco,
     });
+    setFormError(null);
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setFormError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setFormError(null);
 
     try {
       if (isEditMode && selectedServico) {
@@ -64,10 +73,10 @@ export const Servicos = () => {
       } else {
         await servicoService.create(formData);
       }
-      setIsModalOpen(false);
+      closeModal();
       loadServicos();
     } catch (err: any) {
-      setError(err.message || 'Erro ao salvar serviço');
+      setFormError(err.message || 'Dados inválidos. Verifique as informações e tente novamente.');
     }
   };
 
@@ -131,11 +140,11 @@ export const Servicos = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         title={isEditMode ? 'Editar Serviço' : 'Novo Serviço'}
         footer={
           <>
-            <Button onClick={() => setIsModalOpen(false)} variant="secondary">
+            <Button onClick={closeModal} variant="secondary">
               Cancelar
             </Button>
             <Button onClick={handleSubmit} variant="primary" type="submit">
@@ -144,33 +153,36 @@ export const Servicos = () => {
           </>
         }
       >
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Nome"
-            name="nome"
-            value={formData.nome}
-            onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-            required
-          />
-          <FormInput
-            label="Descrição"
-            name="descricao"
-            value={formData.descricao}
-            onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
-            textarea
-            required
-          />
-          <FormInput
-            label="Preço"
-            name="preco"
-            type="number"
-            value={formData.preco}
-            onChange={(e) => setFormData({ ...formData, preco: parseFloat(e.target.value) || 0 })}
-            min={0}
-            step={0.01}
-            required
-          />
-        </form>
+        <>
+          {formError && <div className="form-error-banner">{formError}</div>}
+          <form onSubmit={handleSubmit}>
+            <FormInput
+              label="Nome"
+              name="nome"
+              value={formData.nome}
+              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+              required
+            />
+            <FormInput
+              label="Descrição"
+              name="descricao"
+              value={formData.descricao}
+              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+              textarea
+              required
+            />
+            <FormInput
+              label="Preço"
+              name="preco"
+              type="number"
+              value={formData.preco}
+              onChange={(e) => setFormData({ ...formData, preco: parseFloat(e.target.value) || 0 })}
+              min={0}
+              step={0.01}
+              required
+            />
+          </form>
+        </>
       </Modal>
     </div>
   );
