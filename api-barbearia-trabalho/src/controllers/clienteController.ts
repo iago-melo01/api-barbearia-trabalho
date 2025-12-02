@@ -30,6 +30,20 @@ export const getClienteById = async (req: Request, res: Response) => {
   }
 };
 
+export const getClienteByEmail = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+    if (!email || typeof email !== 'string') {
+      return res.status(400).json({ message: 'Email é obrigatório' });
+    }
+    const cliente = await clienteService.getByEmail(email);
+    if (!cliente) return res.status(404).json({ message: 'Cliente não encontrado.' });
+    return res.json(cliente);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const updateCliente = async (req: Request, res: Response) => {
   try {
     const cliente = await clienteService.update(Number(req.params.id), req.body);

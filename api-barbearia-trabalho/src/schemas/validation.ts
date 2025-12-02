@@ -14,16 +14,29 @@ export const updateClienteSchema = createClienteSchema.partial();
 export const createBarbeiroSchema = z.object({
   nome: z.string().min(2).max(100),
   email: z.string().email().max(255),
+  senha: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   telefone: z.string().min(10).max(15).optional(),
 });
 
 export const updateBarbeiroSchema = createBarbeiroSchema.partial();
+
+// Schemas para Login
+const loginSchema = z.object({
+  email: z.string().email("Email inválido"),
+  senha: z.string().min(1, "Senha é obrigatória"),
+});
+
+export const loginBarbeiroSchema = loginSchema;
+export const loginClienteSchema = loginSchema;
 
 // Schema para Servico
 export const createServicoSchema = z.object({
   nome: z.string().min(2).max(100),
   descricao: z.string().max(500),
   preco: z.number().positive("Preço deve ser positivo"),
+  imagemUrl: z
+    .union([z.string().url("URL da imagem inválida"), z.literal("")])
+    .optional(),
 });
 
 export const updateServicoSchema = createServicoSchema.partial();

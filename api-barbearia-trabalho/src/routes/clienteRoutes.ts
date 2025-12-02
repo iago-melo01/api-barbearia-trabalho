@@ -3,6 +3,7 @@ import {
   createCliente,
   getAllClientes,
   getClienteById,
+  getClienteByEmail,
   updateCliente,
   deleteCliente,
 } from "../controllers/clienteController";
@@ -172,6 +173,7 @@ const router = Router();
 
 router.post("/clientes", validateBody(createClienteSchema), createCliente);
 router.get("/clientes", getAllClientes);
+router.get("/clientes/email", getClienteByEmail);
 router.get("/clientes/:id", validateParams(idParamSchema), getClienteById);
 router.put(
   "/clientes/:id",
