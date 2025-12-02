@@ -4,6 +4,48 @@ import { servicoService } from '../services/servicoService';
 import type { Servico } from '../types';
 import './Home.css';
 
+// Componente para o card de serviço
+const ServiceCard = ({ servico, onAgendar }: { servico: Servico; onAgendar: () => void }) => {
+  const [imageError, setImageError] = useState(false);
+  const hasImage = servico.imagemUrl && !imageError;
+
+  return (
+    <div className="home-service-card">
+      <div className="home-service-image">
+        {hasImage ? (
+          <img 
+            src={servico.imagemUrl!} 
+            alt={servico.nome}
+            className="home-service-image-img"
+            onError={() => setImageError(true)}
+          />
+        ) : null}
+        <div 
+          className="home-service-image-placeholder"
+          style={{ display: hasImage ? 'none' : 'flex' }}
+        >
+          {servico.nome.charAt(0)}
+        </div>
+      </div>
+      <div className="home-service-content">
+        <h3 className="home-service-name">{servico.nome}</h3>
+        <p className="home-service-description">{servico.descricao}</p>
+        <div className="home-service-footer">
+          <span className="home-service-price">
+            R$ {servico.preco.toFixed(2)}
+          </span>
+          <button 
+            className="home-service-btn"
+            onClick={onAgendar}
+          >
+            Agendar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Home = () => {
   const navigate = useNavigate();
   const [servicos, setServicos] = useState<Servico[]>([]);
@@ -77,6 +119,16 @@ export const Home = () => {
               Agendar
             </a>
             <a 
+              href="#avaliacoes" 
+              className="home-nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/avaliacoes');
+              }}
+            >
+              Avaliações
+            </a>
+            <a 
               href="#sobre" 
               className="home-nav-link"
               onClick={(e) => {
@@ -135,28 +187,11 @@ export const Home = () => {
           ) : servicos.length > 0 ? (
             <div className="home-services-grid">
               {servicos.map((servico) => (
-                <div key={servico.id} className="home-service-card">
-                  <div className="home-service-image">
-                    <div className="home-service-image-placeholder">
-                      {servico.nome.charAt(0)}
-                    </div>
-                  </div>
-                  <div className="home-service-content">
-                    <h3 className="home-service-name">{servico.nome}</h3>
-                    <p className="home-service-description">{servico.descricao}</p>
-                    <div className="home-service-footer">
-                      <span className="home-service-price">
-                        R$ {servico.preco.toFixed(2)}
-                      </span>
-                      <button 
-                        className="home-service-btn"
-                        onClick={() => navigate('/agendar')}
-                      >
-                        Agendar
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ServiceCard 
+                  key={servico.id} 
+                  servico={servico} 
+                  onAgendar={() => navigate('/agendar')}
+                />
               ))}
             </div>
           ) : null}

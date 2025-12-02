@@ -38,11 +38,51 @@ export const getById = async (id: number) => {
 };
 
 export const update = async (id: number, data: AgendamentoUpdateData): Promise<Agendamento> => {
+  // Converter data para ISO-8601 se fornecida
+  const updateData: any = { ...data };
+  
+  // Remover campos que não devem ser atualizados
+  delete updateData.clienteId;
+  delete updateData.barbeiroId;
+  delete updateData.servicoId;
+  
+  // Processar campo data se existir
+  if (updateData.data && typeof updateData.data === 'string') {
+    const dataValue = updateData.data;
+    // Verificar se já está em formato ISO-8601 completo
+    const isISOFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/.test(dataValue) || 
+                        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?[+-]\d{2}:\d{2}$/.test(dataValue);
+    
+    if (!isISOFormat) {
+      // Se não estiver em formato ISO, converter
+      // Formato datetime-local: "2025-12-11T01:11" -> precisa converter para ISO
+      const date = new Date(dataValue);
+      if (!isNaN(date.getTime())) {
+        updateData.data = date.toISOString();
+      } else {
+        // Se não conseguir converter, remover do updateData para não causar erro
+        delete updateData.data;
+      }
+    }
+  }
+  
   return prisma.agendamento.update({
     where: { id },
-    data});
+    data: updateData});
 };
 
 export const remove = async (id: number): Promise<Agendamento> => {
   return prisma.agendamento.delete({ where: { id } });
+};
+
+export const getByClienteId = async (clienteId: number) => {
+  return prisma.agendamento.findMany({
+    where: { clienteId },
+    include: {
+      cliente: { select: { nome: true } },
+      barbeiro: { select: { nome: true } },
+      servico: { select: { nome: true, descricao: true } }
+    },
+    orderBy: { data: 'desc' },
+  });
 };

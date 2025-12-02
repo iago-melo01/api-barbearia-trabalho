@@ -49,9 +49,12 @@ export const createAgendamentoSchema = z.object({
   data: z.string()
     .refine((date) => !isNaN(new Date(date).getTime()), "Data inválida")
     .refine((date) => new Date(date) > new Date(), "Data deve ser futura"),
+  status: z.enum(['AGENDADO', 'CONCLUIDO', 'CANCELADO']).optional(),
 });
 
-export const updateAgendamentoSchema = createAgendamentoSchema.partial();
+export const updateAgendamentoSchema = createAgendamentoSchema.partial().extend({
+  status: z.enum(['AGENDADO', 'CONCLUIDO', 'CANCELADO']).optional(),
+});
 
 // Schema para Avaliação
 export const createAvaliacaoSchema = z.object({

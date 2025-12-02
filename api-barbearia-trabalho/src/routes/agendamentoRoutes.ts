@@ -5,6 +5,7 @@ import {
   getAgendamentoById,
   updateAgendamento,
   deleteAgendamento,
+  getAgendamentosByClienteId,
 } from "../controllers/agendamentoController";
 
 import { validateBody, validateParams } from "../middlewares/validation";
@@ -182,5 +183,6 @@ router.put(
  *         description: Agendamento não encontrado
  */
 router.delete("/agendamentos/:id", validateParams(idParamSchema), deleteAgendamento);
+router.get("/agendamentos/cliente/:clienteId", getAgendamentosByClienteId);
 
 export default router;

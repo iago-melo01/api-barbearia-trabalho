@@ -48,3 +48,13 @@ export const deleteAgendamento = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAgendamentosByClienteId = async (req: Request, res: Response) => {
+  try {
+    const clienteId = Number(req.params.clienteId);
+    const agendamentos = await agendamentoService.getByClienteId(clienteId);
+    return res.json(agendamentos);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};

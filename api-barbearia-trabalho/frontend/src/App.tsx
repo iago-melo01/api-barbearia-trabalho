@@ -6,6 +6,7 @@ import { Register } from './pages/Register';
 import { ClienteAuth } from './pages/ClienteAuth';
 import { Home } from './pages/Home';
 import { Agendar } from './pages/Agendar';
+import { ClienteAvaliacoes } from './pages/ClienteAvaliacoes';
 import { Dashboard } from './pages/Dashboard';
 import { Clientes } from './pages/Clientes';
 import { Barbeiros } from './pages/Barbeiros';
@@ -28,6 +29,14 @@ function App() {
           }
         />
         <Route path="/agendar" element={<Agendar />} />
+        <Route
+          path="/avaliacoes"
+          element={
+            <ClientProtectedRoute>
+              <ClienteAvaliacoes />
+            </ClientProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Register />} />
         <Route path="/cliente/login" element={<ClienteAuth />} />

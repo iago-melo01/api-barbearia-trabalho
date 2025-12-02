@@ -25,5 +25,10 @@ export const agendamentoService = {
   delete: async (id: number): Promise<void> => {
     await api.delete(`/agendamentos/${id}`);
   },
+
+  getByClienteId: async (clienteId: number): Promise<Agendamento[]> => {
+    const response = await api.get<Agendamento[]>(`/agendamentos/cliente/${clienteId}`);
+    return response.data;
+  },
 };
 
