@@ -1,0 +1,118 @@
+.agendar-container {
+  min-height: 100vh;
+  background-color: #f6f6f4;
+  padding: 3rem 1rem;
+}
+
+.agendar-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.agendar-loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.agendar-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.agendar-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.agendar-info {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f6f6f4;
+  border-radius: 8px;
+}
+
+.agendar-info-text {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.agendar-register-link {
+  color: #1a1a2e;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.agendar-register-link:hover {
+  color: #ffd700;
+  text-decoration: underline;
+}
+
+.agendar-error {
+  background-color: #f0d6d6;
+  color: #8b1c1c;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0baba;
+}
+
+.agendar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.agendar-form-section {
+  padding: 1.5rem;
+  background-color: #f6f6f4;
+  border-radius: 12px;
+}
+
+.agendar-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #ffd700;
+}
+
+.agendar-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .agendar-content {
+    padding: 2rem 1.5rem;
+  }
+
+  .agendar-title {
+    font-size: 2rem;
+  }
+
+  .agendar-form-actions {
+    flex-direction: column;
+  }
+
+  .agendar-form-actions button {
+    width: 100%;
+  }
+}
+

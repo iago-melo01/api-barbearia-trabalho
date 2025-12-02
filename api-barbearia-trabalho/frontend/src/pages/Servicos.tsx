@@ -17,6 +17,7 @@ export const Servicos = () => {
     nome: '',
     descricao: '',
     preco: 0,
+    imagemUrl: '',
   });
   const [error, setError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -40,7 +41,7 @@ export const Servicos = () => {
   const handleOpenCreate = () => {
     setIsEditMode(false);
     setSelectedServico(null);
-    setFormData({ nome: '', descricao: '', preco: 0 });
+    setFormData({ nome: '', descricao: '', preco: 0, imagemUrl: '' });
     setFormError(null);
     setIsModalOpen(true);
   };
@@ -52,6 +53,7 @@ export const Servicos = () => {
       nome: servico.nome,
       descricao: servico.descricao,
       preco: servico.preco,
+      imagemUrl: servico.imagemUrl || '',
     });
     setFormError(null);
     setIsModalOpen(true);
@@ -180,6 +182,14 @@ export const Servicos = () => {
               min={0}
               step={0.01}
               required
+            />
+            <FormInput
+              label="URL da Imagem"
+              name="imagemUrl"
+              type="url"
+              value={formData.imagemUrl || ''}
+              onChange={(e) => setFormData({ ...formData, imagemUrl: e.target.value })}
+              placeholder="https://exemplo.com/imagem.jpg"
             />
           </form>
         </>

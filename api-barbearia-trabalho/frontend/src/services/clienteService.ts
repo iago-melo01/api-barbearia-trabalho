@@ -12,6 +12,18 @@ export const clienteService = {
     return response.data;
   },
 
+  getByEmail: async (email: string): Promise<Cliente | null> => {
+    try {
+      const response = await api.get<Cliente>(`/clientes/email?email=${encodeURIComponent(email)}`);
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 404) {
+        return null;
+      }
+      throw error;
+    }
+  },
+
   create: async (data: CreateClienteData): Promise<Cliente> => {
     const response = await api.post<Cliente>('/clientes', data);
     return response.data;

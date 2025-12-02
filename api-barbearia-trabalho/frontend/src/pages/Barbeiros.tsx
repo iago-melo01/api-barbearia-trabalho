@@ -16,6 +16,7 @@ export const Barbeiros = () => {
   const [formData, setFormData] = useState<CreateBarbeiroData>({
     nome: '',
     email: '',
+    senha: '',
     telefone: '',
   });
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +41,7 @@ export const Barbeiros = () => {
   const handleOpenCreate = () => {
     setIsEditMode(false);
     setSelectedBarbeiro(null);
-    setFormData({ nome: '', email: '', telefone: '' });
+    setFormData({ nome: '', email: '', senha: '', telefone: '' });
     setFormError(null);
     setIsModalOpen(true);
   };
@@ -51,6 +52,7 @@ export const Barbeiros = () => {
     setFormData({
       nome: barbeiro.nome,
       email: barbeiro.email,
+      senha: '',
       telefone: barbeiro.telefone || '',
     });
     setFormError(null);
@@ -69,7 +71,12 @@ export const Barbeiros = () => {
 
     try {
       if (isEditMode && selectedBarbeiro) {
-        await barbeiroService.update(selectedBarbeiro.id, formData);
+        // Se a senha estiver vazia na edição, remove do objeto antes de enviar
+        const updateData: UpdateBarbeiroData = { ...formData };
+        if (!updateData.senha || updateData.senha.trim() === '') {
+          delete updateData.senha;
+        }
+        await barbeiroService.update(selectedBarbeiro.id, updateData);
       } else {
         await barbeiroService.create(formData);
       }
@@ -173,6 +180,25 @@ export const Barbeiros = () => {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
             />
+            {!isEditMode && (
+              <FormInput
+                label="Senha"
+                name="senha"
+                type="password"
+                value={formData.senha}
+                onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
+                required
+              />
+            )}
+            {isEditMode && (
+              <FormInput
+                label="Nova Senha (deixe em branco para manter a atual)"
+                name="senha"
+                type="password"
+                value={formData.senha}
+                onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
+              />
+            )}
             <FormInput
               label="Telefone"
               name="telefone"

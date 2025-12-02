@@ -28,6 +28,7 @@ export interface Servico {
   nome: string;
   descricao: string;
   preco: number;
+  imagemUrl?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -77,12 +78,14 @@ export interface UpdateClienteData {
 export interface CreateBarbeiroData {
   nome: string;
   email: string;
+  senha: string;
   telefone?: string;
 }
 
 export interface UpdateBarbeiroData {
   nome?: string;
   email?: string;
+  senha?: string;
   telefone?: string;
 }
 
@@ -90,12 +93,14 @@ export interface CreateServicoData {
   nome: string;
   descricao: string;
   preco: number;
+  imagemUrl?: string;
 }
 
 export interface UpdateServicoData {
   nome?: string;
   descricao?: string;
   preco?: number;
+  imagemUrl?: string;
 }
 
 export interface CreateAgendamentoData {
